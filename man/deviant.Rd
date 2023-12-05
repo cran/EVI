@@ -2,9 +2,17 @@
 % Please edit documentation in R/deviant.R
 \name{deviant}
 \alias{deviant}
-\title{This function produces the Epidemic Volatility Index based output data}
+\title{This function produces the Epidemic Volatility Index based output data (beta)}
 \usage{
-deviant(new_cases, cum = FALSE, r_a = 7, r = 0.2, lag_max = 30)
+deviant(
+  new_cases,
+  cum = FALSE,
+  r_a = 7,
+  r = 0.2,
+  lag_max = 30,
+  past = 364/2,
+  method = "EVI"
+)
 }
 \arguments{
 \item{new_cases}{the time series of the newly observed cases per unit of time (ideally per day).}
@@ -16,6 +24,10 @@ deviant(new_cases, cum = FALSE, r_a = 7, r = 0.2, lag_max = 30)
 \item{r}{Definition for the minimum difference in the mean number of cases, one week before and after each time point that, if present, should be detected. This is the case definition and the default is 0.2 (with 0 <= r <= 1). A value of r=0.2 means that we have a case when the mean number of the newly observed cases in the next 7 days is at least 20\% higher than the mean number of the newly observed cases in the past 7 days.}
 
 \item{lag_max}{Integer. Restriction of the maximum window size for the rolling window size. The default is set to one month (lag_max=30) to prevent excess volatility of past epidemic waves from affecting the most recent volatility estimates and the ability of EVI to warn for upcoming waves that may be smaller and of lower volatility than previous ones.}
+
+\item{past}{Integer. Default The full length of the input data series. Restriction on the historical data that EVI/cEVI will use. This is set to 365 (default) to account for a year and aid running times.}
+
+\item{method}{either "EVI" or "cEVI", default equals to "EVI".}
 }
 \value{
 \itemize{
@@ -42,21 +54,21 @@ deviant(new_cases, cum = FALSE, r_a = 7, r = 0.2, lag_max = 30)
 \item{sp_all: the specificity (Sp) of EVI up to this time point.}}
 }
 \description{
-This is the main function of the \code{\link[EVI:EVI-package]{EVI-package}} that you should use to analyze a time series of observed cases per unit of time (ideally per day).
+This is a secondary function of the \code{\link[EVI:EVI-package]{EVI-package}} that you should use to analyze a time series of observed cases per unit of time (ideally per day). This function is based on ongoing work and should be used with caution.
 }
 \details{
 For each time point the stored variables are:
 }
 \examples{
-     \dontrun{
-        # Epidemic Volatility Index (EVI) Explained:
-	       vignette('EVI', package='EVI')
-	       
-       # For information on how to cite EVI:
-       citation('EVI')
-    }
+data("Italy")
+deviant(new_cases=Italy$Cases[35:55], cum=FALSE, r_a=7, r=0.2, lag_max=30,method="EVI")
+#deviant(new_cases=Italy$Cases, cum=FALSE, r_a=7, r=0.2, lag_max=30,method="EVI")
+#This step should take some time and the time elapsed will be printed.
 
+# data("Austria")
+# deviant(new_cases=Austria$Cases, cum=FALSE, r_a=7, r=0.2, lag_max=30,method="EVI")
 }
 \references{
-Kostoulas, P., Meletis, E., Pateras, K. et al. The epidemic volatility index, a novel early warning tool for identifying new waves in an epidemic. Sci Rep 11, 23775 (2021). \doi{10.1038/s41598-021-02622-3}
+Kostoulas P, Meletis E, Pateras K, et al. The epidemic volatility index, a novel early warning tool for identifying new waves in an epidemic. Sci Rep 11, 23775 (2021). \doi{10.1038/s41598-021-02622-3}
+Pateras K, Meletis E, Denwood M, et al. The convergence epidemic index (cEVI) an early warning tool for identifying waves in an epidemic. Inf Dis Mod, (2023). \doi{10.1016/j.idm.2023.05.001}
 }

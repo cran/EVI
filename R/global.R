@@ -1,1 +1,0 @@
-utils::globalVariables(c("EVI_output"))

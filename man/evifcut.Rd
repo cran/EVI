@@ -4,16 +4,20 @@
 \alias{evifcut}
 \title{Sensitivity-Specificity estimation for each cut-off value and rolling window size}
 \usage{
-evifcut(evi, cases, cut, r)
+evifcut(evi = NA, cevi = NA, cases, cut = NA, r, method = "EVI")
 }
 \arguments{
 \item{evi}{numeric vector - object (obtained from the evi function and stored as ev) that corresponds to the relative change in the standard deviation.}
+
+\item{cevi}{numeric vector - object (obtained from the cevi function and stored as cev) that corresponds to either a positive or negative test.}
 
 \item{cases}{numeric vector with the number of new cases per unit of time (i.e., daily).}
 
 \item{cut}{threshold value (0 <= c <= 0.5) for issuing an early warning. If evi >= c, an early warning is issued and otherwise is not.}
 
 \item{r}{Definition for the minimum difference in the mean number of cases, one week before and after each time point that, if present, should be detected. This is the case definition and the default is 0.2 (with 0 <= r <= 1). A value of r=0.2 means that we have a case when the mean number of the newly observed cases in the next 7 days is at least 20\% higher than the mean number of the newly observed cases in the past 7 days.}
+
+\item{method}{either "EVI" or "cEVI", default equals to "EVI".}
 }
 \value{
 Returns a list of the estimated Sensitivity, Specificity, apparent and true prevalence for each cut-off value and rolling window size
@@ -22,12 +26,14 @@ Returns a list of the estimated Sensitivity, Specificity, apparent and true prev
 This function calculates the sensitivity and the specificity for each cut-off value and rolling window size.
 }
 \examples{
-data("Italy")
-cases = mova(cases = Italy$Cases)
-roll = rollsd(cases = cases)
-ev = evi(rollsd = roll)
-evifcut(evi = ev, cases = cases, cut = 0.01, r = 0.2)
+## EVI Example ##
+#data("Italy")
+#cases = mova(cases = Italy$Cases)
+#roll = rollsd(cases = cases,lag_t = 7)
+#ev = evi(rollsd = roll)
+#evifcut(evi = ev, cases = cases, cut = 0.01, r = 0.2)
 }
 \references{
-Kostoulas, P., Meletis, E., Pateras, K. et al. The epidemic volatility index, a novel early warning tool for identifying new waves in an epidemic. Sci Rep 11, 23775 (2021). \doi{10.1038/s41598-021-02622-3}
+Kostoulas P, Meletis E, Pateras K, et al. The epidemic volatility index, a novel early warning tool for identifying new waves in an epidemic. Sci Rep 11, 23775 (2021). \doi{10.1038/s41598-021-02622-3}
+Pateras K, Meletis E, Denwood M, et al. The convergence epidemic index (cEVI) an early warning tool for identifying waves in an epidemic. Inf Dis Mod, (2023)
 }

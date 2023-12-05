@@ -2,9 +2,9 @@
 % Please edit documentation in R/EVI.graphs.R
 \name{evi.graphs}
 \alias{evi.graphs}
-\title{Epidemic Volatility Index Graphs}
+\title{This function  produces  plots of the time series data with the EVI predictions.}
 \usage{
-evi.graphs(EVI_output, graph = c("EVI"), ln = TRUE, type = "p")
+evi.graphs(EVI_output, graph = c("EVI"), ln = T, type = "p")
 }
 \arguments{
 \item{EVI_output}{output of the \code{\link[EVI:deviant]{deviant()}} function}
@@ -15,27 +15,26 @@ evi.graphs(EVI_output, graph = c("EVI"), ln = TRUE, type = "p")
 
 \item{type}{By default, points are plotted on EVI graphs. In cases where, changes are very sudden or data sparsely available, type="l" introduces lines on top of points for the "EVI" type of graph.}
 }
-\value{
+\description{
 Three types of plots are generated:
 (i) A plot of the confirmed cases with red dots corresponding to time points that an early warning was issued and grey dots corresponding to time points without an early warning indication.
 (ii) A plot of the confirmed cases with colored dots corresponding to time points with an early warning. Color intensity is increasing with higher positive predictive value (PPV).
 (iii) A plot of the confirmed cases with colored dots corresponding to time points without an early warning. Color intensity is increasing with higher negative predictive value (NPV).
-
+}
+\details{
 An EVI_output is required as input, derived from the \code{\link[EVI:deviant]{deviant()}} function.
 }
-\description{
-This function  produces  plots of the time series data with the EVI predictions.
-}
 \examples{
-     \dontrun{
-        # Epidemic Volatility Index (EVI) Explained:
-	       vignette('EVI', package='EVI')
-	       
-       # For information on how to cite EVI:
-       citation('EVI')
-    }
+data("Italy")
+EVI_output<-deviant(new_cases=Italy$Cases[1:20], cum=FALSE, r_a=7, r=0.2, lag_max=30,method="EVI")
+#EVI_output<-deviant(new_cases=Italy$Cases, cum=FALSE, r_a=7, r=0.2, lag_max=30,method="EVI")
 
+evi.graphs(EVI_output=EVI_output, graph="EVI", ln=TRUE)
+evi.graphs(EVI_output=EVI_output, graph="PPV", ln=TRUE)
+evi.graphs(EVI_output=EVI_output, graph="NPV", ln=TRUE)
+evi.graphs(EVI_output=EVI_output, graph="EVI", ln=TRUE, type="l") # For the line EVI plot
 }
 \references{
-Kostoulas, P., Meletis, E., Pateras, K. et al. The epidemic volatility index, a novel early warning tool for identifying new waves in an epidemic. Sci Rep 11, 23775 (2021). \doi{10.1038/s41598-021-02622-3}
+Kostoulas P, Meletis E, Pateras K, et al. The epidemic volatility index, a novel early warning tool for identifying new waves in an epidemic. Sci Rep 11, 23775 (2021). \doi{10.1038/s41598-021-02622-3}
+Pateras K, Meletis E, Denwood M, et al. The convergence epidemic index (cEVI) an early warning tool for identifying waves in an epidemic. Inf Dis Mod, (2023)
 }
